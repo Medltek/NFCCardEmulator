@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NFC Card Emulator</string>
+    <string name="servicedesc">HOST BASED CARD EMULATION</string>
+    <string name="aiddescription">AID</string>
+</resources>
