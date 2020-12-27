@@ -18,7 +18,7 @@ public MyEmulator(Context context) {
 
     try {
         AID appletAID = AIDUtil.create(aid);
-        simulator.installApplet(appletAID, MyApplet.class);
+        //simulator.installApplet(appletAID, MyApplet.class);
         byte[] aid_bytes = Utils.hexStringToByteArray(aid);
         byte[] inst_params = new byte[aid.length() + 1];
         inst_params[0] = (byte) aid_bytes.length;
