@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import hugo.weaving.DebugLog;
+
 public class EmulatorSingleton {
     public static final String TAG = "com.example.nfccardemulator";
     public static final String EXTRA_CAPDU = "MSG_CAPDU";
@@ -52,7 +54,9 @@ public class EmulatorSingleton {
             emulator = new MyEmulator(context);
         }
     }
+    @DebugLog
     public static byte[] process(Context context, byte[] capdu) {
+
         byte[] rapdu = emulator.process(capdu);
 
         Intent i = new Intent(TAG);
@@ -60,7 +64,7 @@ public class EmulatorSingleton {
         if (rapdu != null)
             i.putExtra(EXTRA_RAPDU, Utils.byteArrayToHexString(rapdu));
 
-
+        Log.d(TAG, "EmulatorSingleton: process() called with parameter: " + capdu + " returns rapdu: " + rapdu);
         return rapdu;
     }
     public static String[] getRegisteredAids(Context context) {

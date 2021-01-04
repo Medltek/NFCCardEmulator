@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+import static com.example.nfccardemulator.EmulatorSingleton.TAG;
+
 public class MyHostApduService extends HostApduService {
 
     @Override
@@ -22,7 +24,9 @@ public class MyHostApduService extends HostApduService {
 
     @Override
     public byte[] processCommandApdu(byte[] capdu, Bundle extras) {
+        Log.d(TAG, "processCommandApdu called with: parameter: " + capdu);
         return EmulatorSingleton.process(this, capdu);
+
     }
 
     @Override

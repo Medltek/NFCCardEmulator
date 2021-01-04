@@ -19,6 +19,8 @@ import com.licel.jcardsim.samples.BaseApplet;
 
 import javacard.framework.*;
 
+import static javacard.framework.ISO7816.INS_SELECT;
+
 /**
  * Basic HelloWorld JavaCard Applet.
  * @author LICEL LLC
@@ -67,6 +69,7 @@ public class MyApplet extends BaseApplet {
 
     private byte[] echoBytes;
     private byte[] initParamsBytes;
+    private byte[] currentEF;
     private final byte[] transientMemory;
     private static final short LENGTH_ECHO_BYTES = 256;
 
@@ -78,6 +81,7 @@ public class MyApplet extends BaseApplet {
      */
     protected MyApplet(byte[] bArray, short bOffset, byte bLength) {
         echoBytes = new byte[LENGTH_ECHO_BYTES];
+        currentEF = new byte[LENGTH_ECHO_BYTES];
         if (bLength > 0) {
             byte iLen = bArray[bOffset]; // aid length
             bOffset = (short) (bOffset + iLen + 1);
@@ -106,6 +110,7 @@ public class MyApplet extends BaseApplet {
     /**
      * This method is called each time the applet receives APDU.
      */
+
     public void process(APDU apdu) {
         // good practice
         if(selectingApplet()) return;
@@ -135,10 +140,20 @@ public class MyApplet extends BaseApplet {
                 return;
             case NOP_INS:
                 return;
+            case INS_SELECT:
+                selectEF(apdu);
             default:
                 // We do not support any other INS values
                 ISOException.throwIt(ISO7816.SW_INS_NOT_SUPPORTED);
         }
+    }
+
+    private void selectEF(APDU apdu) {
+        // select
+        byte buffer[] = apdu.getBuffer();
+        currentEF[0] = buffer[ISO7816.OFFSET_CDATA+1];
+
+        ISOException.throwIt(ISO7816.SW_NO_ERROR);
     }
 
     /**
@@ -147,6 +162,7 @@ public class MyApplet extends BaseApplet {
      * @param apdu APDU that requested hello message
      * @param sw response sw code
      */
+
     private void sayHello(APDU apdu, short sw) {
         // Here all bytes of the APDU are stored
         byte[] buffer = apdu.getBuffer();
@@ -178,6 +194,7 @@ public class MyApplet extends BaseApplet {
     /**
      * echo v2
      */
+
     private void sayEcho2(APDU apdu) {
         byte buffer[] = apdu.getBuffer();
 
@@ -210,6 +227,7 @@ public class MyApplet extends BaseApplet {
     /**
      * send some hello data, and indicate there's more
      */
+
     private void sayContinue(APDU apdu) {
         byte[] echo = transientMemory;
         short echoLength = (short) 6;
@@ -226,6 +244,7 @@ public class MyApplet extends BaseApplet {
      *
      * @param apdu APDU that requested hello message
      */
+
     private void maximumData(APDU apdu) {
         short maxData = APDU.getOutBlockSize();
         byte[] buffer = apdu.getBuffer();
@@ -234,6 +253,7 @@ public class MyApplet extends BaseApplet {
     }
 
     // prototype
+
     private void listObjects(APDU apdu)
     {
         byte buffer[] = apdu.getBuffer();

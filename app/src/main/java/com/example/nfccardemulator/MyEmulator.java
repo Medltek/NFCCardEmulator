@@ -2,35 +2,41 @@ package com.example.nfccardemulator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
 import com.licel.jcardsim.base.Simulator;
 import com.licel.jcardsim.base.SimulatorRuntime;
 import com.licel.jcardsim.utils.APDUScriptTool;
 import javacard.framework.*;
 import com.licel.jcardsim.utils.*;
 
+import static com.example.nfccardemulator.EmulatorSingleton.TAG;
+
 public class MyEmulator implements Emulator {
 
     private static Simulator simulator = null;
-
+    private AID appletAID;
 public MyEmulator(Context context) {
-
-    String aid="F07465737420414944", name= "MyApplet", extra_install = "", extra_error = "";
-
+    Log.d(TAG, "MyEmulator: Started");
+    String aid="F000000001", name= "MyApplet", extra_install = "", extra_error = "";
+    simulator = new Simulator();
     try {
-        AID appletAID = AIDUtil.create(aid);
+        //AID appletAID = AIDUtil.create(aid);
         //simulator.installApplet(appletAID, MyApplet.class);
         byte[] aid_bytes = Utils.hexStringToByteArray(aid);
         byte[] inst_params = new byte[aid.length() + 1];
         inst_params[0] = (byte) aid_bytes.length;
         System.arraycopy(aid_bytes, 0, inst_params, 1, aid_bytes.length);
-        simulator.installApplet(AIDUtil.create(aid), MyApplet.class, inst_params, (short) 0, (byte) inst_params.length);
+        appletAID = simulator.installApplet(AIDUtil.create(aid), MyApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
         extra_install += "\n" + name + " (AID: " + aid + ")";
+        Log.d(TAG, "MyEmulator: Applet Installation Successful" + " " + aid);
     } catch (Exception e) {
+        Log.d(TAG, "MyEmulator: Applet Installation failed");
         e.printStackTrace();
         extra_error += "\n" + "Could not install " + name + " (AID: " + aid + ")";
     }
 
-    Intent i = new Intent(EmulatorSingleton.TAG);
+    Intent i = new Intent(TAG);
     if (!extra_error.isEmpty())
         i.putExtra(EmulatorSingleton.EXTRA_ERROR, extra_error);
     if (!extra_install.isEmpty())
@@ -45,6 +51,10 @@ public MyEmulator(Context context) {
     }
 
     public byte[] process(byte[] commandAPDU) {
+        //byte[] response = simulator.transmitCommand(new byte[]{0,2,0,0});
+       // ByteUtil.requireSW(response, 0x9000);
+
+         simulator.selectApplet(appletAID);
         return simulator.transmitCommand(commandAPDU);
     }
 

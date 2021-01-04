@@ -5,7 +5,7 @@
     <aid-group
         android:category="other"
         android:description="@string/aiddescription" >
-        <aid-filter android:name="F07465737420414944" />
+        <aid-filter android:name="F000000001" />
 
     </aid-group>
 
