@@ -25,7 +25,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation files('libs\\jcardsim-2.2.1-all.jar')
-
+    implementation files('libs\\api_classic-3.1.0.jar')
 
 
     testImplementation 'junit:junit:4.12'
