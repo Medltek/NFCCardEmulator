@@ -19,7 +19,7 @@ package com.example.nfccardemulator;
 
 import javacard.framework.AID;
 import javacard.framework.ISO7816;
-import org.bouncycastle.util.encoders.Hex;
+import com.licel.jcardsim.bouncycastle.util.encoders.*;
 
 import java.util.Comparator;
 

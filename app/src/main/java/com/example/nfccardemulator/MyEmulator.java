@@ -6,19 +6,21 @@ import android.util.Log;
 
 import com.licel.jcardsim.base.Simulator;
 import com.licel.jcardsim.base.SimulatorRuntime;
-import com.licel.jcardsim.utils.APDUScriptTool;
+
 import javacard.framework.*;
 import com.licel.jcardsim.utils.*;
 
-import static com.example.nfccardemulator.EmulatorSingleton.TAG;
+//import com.example.nfccardemulator.EmulatorSingleton.TAG;
 
 public class MyEmulator implements Emulator {
 
+    public static final String TAG = "com.example.nfccardemulator";
     private static Simulator simulator = null;
+
     private AID appletAID;
 public MyEmulator(Context context) {
     Log.d(TAG, "MyEmulator: Started");
-    String aid="F000000001", name= "MyApplet", extra_install = "", extra_error = "";
+    String aid="F000000001", name= "VSBApplet", extra_install = "", extra_error = "";
     simulator = new Simulator();
     try {
         //AID appletAID = AIDUtil.create(aid);
@@ -27,7 +29,7 @@ public MyEmulator(Context context) {
         byte[] inst_params = new byte[aid.length() + 1];
         inst_params[0] = (byte) aid_bytes.length;
         System.arraycopy(aid_bytes, 0, inst_params, 1, aid_bytes.length);
-        appletAID = simulator.installApplet(AIDUtil.create(aid), MyApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
+        appletAID = simulator.installApplet(AIDUtil.create(aid), VSBApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
         extra_install += "\n" + name + " (AID: " + aid + ")";
         Log.d(TAG, "MyEmulator: Applet Installation Successful" + " " + aid);
     } catch (Exception e) {
