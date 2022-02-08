@@ -17,6 +17,32 @@ package com.example.nfccardemulator;
 
 import com.licel.jcardsim.samples.BaseApplet;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.math.BigInteger;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Arrays;
+import java.util.Base64;
+import java.io.*;
+import java.security.*;
+import java.security.spec.*;
+
+import javax.crypto.Cipher;
+
 import javacard.framework.*;
 
 import static javacard.framework.ISO7816.INS_SELECT;
@@ -27,6 +53,9 @@ import static javacard.framework.ISO7816.INS_SELECT;
  */
 public class MyApplet extends BaseApplet {
 
+    private final static byte SEND_ENCRYPTED = (byte) 0x10;
+    static String publicKeyEncoded = "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtJNu6qOiYMaRyIlFBHBkv5vVgBwX12oOHfBtUWXAvOtfb3WVJbVStMRJASEMh+fJOxR7TOKvIECQynaPpvXdQMFkNXFSKX0hRB96oTJBeeJrqHlM+07yO8R4ab00LaRAX84eP4S3gz1e44+QSQzgAxg3DlC29XTx2H/3Xl6CfpVPtRZKk2NrfkdJTK+Lrpw//eG7HSK0rPaUVqTjtdA2ElLQ76BsbG+oWhR0/3nBhefGEeLxVkWNANKoIRjbioFts/svFRIeDzUPbuMcKAdmxSjhZMTxvjVini7jg7VAoIGONJTh6DXHIH4EUF6dBq+CP+oPPeda/Fapv07IpaJ2yT46fwZaonYwWdRTSM2pyKxBhPugkL/2anlsX/2l3Noc8KARid0/McuXNnJgNJOJrt2s7SLlO/E8Ftr/q8d3+sCaJFvjbS1LRxneShKVTluZKVOFWWuzAA8Qd1rHukCABLSXTdBmPqCH1Kicbv43NkrSYZuaRyTwxNp27dEXSm+8CDLKXxY8wsnZmm7sm+sSJDdYSU1QQ9KtIHnbmOADT7Z4pA45IiK+CakYYwZSxunCSd+NL1O50RlYlExsdTkdUMe62x1i3R9Re00S+G+LdbFe2bR1cNfqTWiNJDNj4Zzx82tTS5/I7IORybPfl9/Rp0U2xE93ISUt2PNzd60oXRMCAwEAAQ==";
+    static String plainText = "token";
     /**
      * Instruction: say hello
      */
@@ -120,6 +149,13 @@ public class MyApplet extends BaseApplet {
             case SAY_HELLO_INS:
                 sayHello(apdu, (short)0x9000);
                 return;
+            case SEND_ENCRYPTED:
+                try {
+                    sendEncrypted(apdu);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return;
             case SAY_ECHO2_INS:
                 sayEcho2(apdu);
                 return;
@@ -143,9 +179,71 @@ public class MyApplet extends BaseApplet {
             case INS_SELECT:
                 selectEF(apdu);
             default:
-                // We do not support any other INS values
+                // We do nsot support any other INS values
                 ISOException.throwIt(ISO7816.SW_INS_NOT_SUPPORTED);
         }
+    }
+
+    private void sendEncrypted(APDU apdu) throws Exception {
+        //Encryption part
+        byte[] decodedPublicKey = Base64.getDecoder().decode(publicKeyEncoded);
+        System.out.println("decoded byte array length: " + decodedPublicKey.length);
+
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(
+                decodedPublicKey);
+        PublicKey publicKey2 = keyFactory.generatePublic(publicKeySpec);
+        RSAPublicKeySpec publicKeySpec2 = keyFactory.getKeySpec(publicKey2, RSAPublicKeySpec.class);
+
+        byte[] cipherTextArray = encrypt(plainText, publicKey2);
+        String encryptedText = Base64.getEncoder().encodeToString(cipherTextArray);
+        System.out.println("Encrypted Text : " + encryptedText);
+        byte[] textBytes = Base64.getDecoder().decode(encryptedText);
+        System.out.println("Encrypted Text bytes count: " + textBytes.length);
+        //
+
+
+        //Communication part
+
+        // Here all bytes of the APDU are stored
+        byte[] buffer = apdu.getBuffer();
+        // receive all bytes
+        // if P1 = 0x10 (echo)
+        short incomeBytes = apdu.setIncomingAndReceive();
+        byte[] echo = transientMemory;
+        short echoLength;
+        if (buffer[ISO7816.OFFSET_P1] == 0x10) {
+            echoLength = incomeBytes;
+            Util.arrayCopyNonAtomic(buffer, ISO7816.OFFSET_CDATA, echo, (short) 0, incomeBytes);
+        } else {
+            echoLength = (short) helloMessage.length;
+            Util.arrayCopyNonAtomic(helloMessage, (short) 0, echo, (short) 0, (short) helloMessage.length);
+        }
+        // Tell JVM that we will send data
+        apdu.setOutgoing();
+        // Set the length of data to send
+        apdu.setOutgoingLength(echoLength);
+        // Send our message starting at 0 position
+        apdu.sendBytesLong(echo, (short) 0, echoLength);
+        // Set application specific sw
+        /*if(sw!=0x9000) {
+            ISOException.throwIt(sw);
+        }*/
+    }
+
+    public static byte[] encrypt(String plainText, PublicKey publicKey2) throws Exception
+    {
+
+        // Get Cipher Instance
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
+
+        // Initialize Cipher for ENCRYPT_MODE
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey2);
+
+        // Perform Encryption
+        byte[] cipherText = cipher.doFinal(plainText.getBytes());
+
+        return cipherText;
     }
 
     private void selectEF(APDU apdu) {
@@ -188,6 +286,8 @@ public class MyApplet extends BaseApplet {
         if(sw!=0x9000) {
             ISOException.throwIt(sw);
         }
+
+
     }
 
 

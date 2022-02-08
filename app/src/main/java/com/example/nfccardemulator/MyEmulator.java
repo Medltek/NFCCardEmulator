@@ -20,6 +20,8 @@ public class MyEmulator implements Emulator {
     private AID appletAID;
 public MyEmulator(Context context) {
     Log.d(TAG, "MyEmulator: Started");
+
+    //MyApplet(Hello applet) installation
     String aid="F000000001", name= "VSBApplet", extra_install = "", extra_error = "";
     simulator = new Simulator();
     try {
@@ -29,7 +31,7 @@ public MyEmulator(Context context) {
         byte[] inst_params = new byte[aid.length() + 1];
         inst_params[0] = (byte) aid_bytes.length;
         System.arraycopy(aid_bytes, 0, inst_params, 1, aid_bytes.length);
-        appletAID = simulator.installApplet(AIDUtil.create(aid), VSBApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
+        appletAID = simulator.installApplet(AIDUtil.create(aid), MyApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
         extra_install += "\n" + name + " (AID: " + aid + ")";
         Log.d(TAG, "MyEmulator: Applet Installation Successful" + " " + aid);
     } catch (Exception e) {
@@ -37,6 +39,17 @@ public MyEmulator(Context context) {
         e.printStackTrace();
         extra_error += "\n" + "Could not install " + name + " (AID: " + aid + ")";
     }
+
+// VSBApplet installation
+    /*String name = "VSBApplet", aid="F000000001", extra_install = "",extra_error = "";
+    simulator = new Simulator();
+    try {
+        simulator.installApplet(AIDUtil.create(aid), VSBApplet.class);
+        extra_install += "\n" + name + " (AID: " + aid + ")";
+    } catch (Exception e) {
+        e.printStackTrace();
+        extra_error += "\n" + "Could not install " + name + " (AID: " + aid + ")";
+    }*/
 
     Intent i = new Intent(TAG);
     if (!extra_error.isEmpty())
@@ -56,7 +69,7 @@ public MyEmulator(Context context) {
         //byte[] response = simulator.transmitCommand(new byte[]{0,2,0,0});
        // ByteUtil.requireSW(response, 0x9000);
 
-         simulator.selectApplet(appletAID);
+        simulator.selectApplet(appletAID);
         return simulator.transmitCommand(commandAPDU);
     }
 
