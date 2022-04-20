@@ -15,9 +15,11 @@ import com.licel.jcardsim.utils.*;
 public class MyEmulator implements Emulator {
 
     public static final String TAG = "com.example.nfccardemulator";
+
     private static Simulator simulator = null;
 
     private AID appletAID;
+
 public MyEmulator(Context context) {
     Log.d(TAG, "MyEmulator: Started");
 

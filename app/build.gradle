@@ -20,13 +20,21 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url "https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core"
+    }
+}
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-
+    //implementation 'org.jasig.cas.client:cas-client-core:3.6.4' //CAS client // kills app atm
     implementation files('libs\\jcardsim-3.0.4-SNAPSHOT-android.jar')
 
+    implementation 'org.jasig.cas.client:cas-client-core:3.6.4'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
