@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\dan0125\\Desktop\\Key for Signed APK.jks')
+            storePassword 'C331882e8ae0494'
+            keyAlias 'C331882e8ae0494'
+            keyPassword 'C331882e8ae0494'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -15,9 +23,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
+
 }
 
 repositories {
@@ -39,6 +48,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
 }
 
