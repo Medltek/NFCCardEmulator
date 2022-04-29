@@ -15,7 +15,7 @@
  */
 package com.example.nfccardemulator;
 
-import com.licel.jcardsim.bouncycastle.util.encoders.*;
+import com.licel.jcardsim.bouncycastle.util.encoders.Hex;
 
 /**
  * Utility methods for dealing with byte arrays.

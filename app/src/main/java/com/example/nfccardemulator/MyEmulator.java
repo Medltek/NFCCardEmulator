@@ -2,14 +2,11 @@ package com.example.nfccardemulator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Trace;
 import android.util.Log;
 
 import com.licel.jcardsim.base.Simulator;
-import com.licel.jcardsim.base.SimulatorRuntime;
 
-import javacard.framework.*;
-import com.licel.jcardsim.utils.*;
+import javacard.framework.AID;
 
 //import com.example.nfccardemulator.EmulatorSingleton.TAG;
 

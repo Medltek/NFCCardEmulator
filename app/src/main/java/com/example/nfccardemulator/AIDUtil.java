@@ -17,11 +17,12 @@
  */
 package com.example.nfccardemulator;
 
-import javacard.framework.AID;
-import javacard.framework.ISO7816;
-import com.licel.jcardsim.bouncycastle.util.encoders.*;
+import com.licel.jcardsim.bouncycastle.util.encoders.Hex;
 
 import java.util.Comparator;
+
+import javacard.framework.AID;
+import javacard.framework.ISO7816;
 
 /**
  * Utility methods for dealing with AIDs.

@@ -16,41 +16,25 @@
 package com.example.nfccardemulator;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Trace;
 
 import com.licel.jcardsim.samples.BaseApplet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.math.BigInteger;
-import java.security.Key;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
-import java.io.*;
-import java.security.*;
-import java.security.spec.*;
 
 import javax.crypto.Cipher;
 
-import javacard.framework.*;
-
-import javacardx.apdu.ExtendedLength;
+import javacard.framework.APDU;
+import javacard.framework.ISO7816;
+import javacard.framework.ISOException;
+import javacard.framework.JCSystem;
+import javacard.framework.Util;
 
 import static javacard.framework.ISO7816.INS_SELECT;
 

@@ -1,34 +1,17 @@
 package com.example.nfccardemulator;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
-import com.licel.jcardsim.base.Simulator;
-
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.Key;
 import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
-
-import javacard.framework.ISOException;
 
 
 public class MyAppletTest {

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import hugo.weaving.DebugLog;
+//import hugo.weaving.DebugLog;
 
 public class EmulatorSingleton {
     public static final String TAG = "com.example.nfccardemulator";
@@ -54,7 +54,7 @@ public class EmulatorSingleton {
             emulator = new MyEmulator(context);
         }
     }
-    @DebugLog
+
     public static byte[] process(Context context, byte[] capdu) {
 
         byte[] rapdu = emulator.process(capdu);

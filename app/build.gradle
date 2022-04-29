@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.jakewharton.hugo'
+//apply plugin: 'com.jakewharton.hugo'
 
 android {
     signingConfigs {
         release {
             storeFile file('C:\\Users\\dan0125\\Desktop\\Key for Signed APK.jks')
             storePassword 'C331882e8ae0494'
-            keyAlias 'C331882e8ae0494'
+            keyAlias 'Maty'
             keyPassword 'C331882e8ae0494'
         }
     }
@@ -19,39 +19,40 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
-            minifyEnabled false
-
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-}
-
-repositories {
-    maven {
-        url "https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core"
     }
-}
+
+    repositories {
+
+    }
 
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    //implementation 'org.jasig.cas.client:cas-client-core:3.6.4' //CAS client // kills app atm
-    implementation files('libs\\jcardsim-3.0.4-SNAPSHOT-android.jar')
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation 'androidx.appcompat:appcompat:1.2.0'
+        implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    implementation 'org.jasig.cas.client:cas-client-core:3.6.4'
+        implementation files('libs\\jcardsim-3.0.4-SNAPSHOT-android.jar')
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
+        testImplementation 'junit:junit:4.12'
+        androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+        // debugImplementation because LeakCanary should only run in debug builds.
+        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+    }
 }
 
 
