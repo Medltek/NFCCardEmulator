@@ -60,9 +60,9 @@ public class EmulatorSingleton {
         byte[] rapdu = emulator.process(capdu);
 
         Intent i = new Intent(TAG);
-        i.putExtra(EXTRA_CAPDU, Utils.byteArrayToHexString(capdu));
+        i.putExtra(EXTRA_CAPDU, ByteUtil.byteArrayToHexString(capdu));
         if (rapdu != null)
-            i.putExtra(EXTRA_RAPDU, Utils.byteArrayToHexString(rapdu));
+            i.putExtra(EXTRA_RAPDU, ByteUtil.byteArrayToHexString(rapdu));
 
         Log.d(TAG, "EmulatorSingleton: process() called with parameter: " + capdu + " returns rapdu: " + rapdu);
         return rapdu;
