@@ -10,7 +10,7 @@ import javacard.framework.AID;
 
 //import com.example.nfccardemulator.EmulatorSingleton.TAG;
 
-public class MyEmulator implements Emulator {
+public class CardEmulator implements Emulator {
 
     public static final String TAG = "com.example.nfccardemulator";
 
@@ -18,22 +18,22 @@ public class MyEmulator implements Emulator {
 
     private AID appletAID;
 
-public MyEmulator(Context context) {
-    Log.d(TAG, "MyEmulator: Started");
+public CardEmulator(Context context) {
+    Log.d(TAG, "CardEmulator: Started");
 
-    //MyApplet installation
-    String aid="F000000001", name= "MyApplet", extra_install = "", extra_error = "";
+    //VSBAccessApplet installation
+    String aid="F000000001", name= "VSBAccessApplet", extra_install = "", extra_error = "";
     simulator = new Simulator();
     try {
         byte[] aid_bytes = ByteUtil.hexStringToByteArray(aid);
         byte[] inst_params = new byte[aid.length() + 1];
         inst_params[0] = (byte) aid_bytes.length;
         System.arraycopy(aid_bytes, 0, inst_params, 1, aid_bytes.length);
-        appletAID = simulator.installApplet(AIDUtil.create(aid), MyApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
+        appletAID = simulator.installApplet(AIDUtil.create(aid), VSBAccessApplet.class ,inst_params, (short) 0, (byte) inst_params.length);
         extra_install += "\n" + name + " (AID: " + aid + ")";
-        Log.d(TAG, "MyEmulator: Applet Installation Successful" + " " + aid);
+        Log.d(TAG, "CardEmulator: Applet Installation Successful" + " " + aid);
     } catch (Exception e) {
-        Log.d(TAG, "MyEmulator: Applet Installation failed");
+        Log.d(TAG, "CardEmulator: Applet Installation failed");
         e.printStackTrace();
         extra_error += "\n" + "Could not install " + name + " (AID: " + aid + ")";
     }

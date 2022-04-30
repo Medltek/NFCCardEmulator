@@ -51,7 +51,7 @@ public class EmulatorSingleton {
             Log.d("", "Begin transaction");
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(context);
             String str_emulator = SP.getString("emulator", "");
-            emulator = new MyEmulator(context);
+            emulator = new CardEmulator(context);
         }
     }
 

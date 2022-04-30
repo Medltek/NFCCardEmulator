@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
                         ex.printStackTrace();
                     }
 
-                    Toast.makeText(MainActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(MainActivity.this, LoggedInActivity.class);
-                    MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(LoginActivity.this, LoggedInActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
                 } else if (username.getText().toString().equals(user2.getUsername()) && password.getText().toString().equals(user2.getPassword())) {
 
                     byte[] Data=user2.getTestingToken(); //define data
@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                    Toast.makeText(MainActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(MainActivity.this, LoggedInActivity.class);
-                    MainActivity.this.startActivity(myIntent);
-                    MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(LoginActivity.this, LoggedInActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
+                    LoginActivity.this.startActivity(myIntent);
                 } else if (username.getText().toString().equals(user3.getUsername()) && password.getText().toString().equals(user3.getPassword())) {
 
                     byte[] Data=user3.getTestingToken(); //define data
@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                    Toast.makeText(MainActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(MainActivity.this, LoggedInActivity.class);
-                    MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(LoginActivity.this, LoggedInActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
                 } else if (username.getText().toString().equals(user4.getUsername()) && password.getText().toString().equals(user4.getPassword())) {
 
                     byte[] Data=user4.getTestingToken(); //define data
@@ -113,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                    Toast.makeText(MainActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(MainActivity.this, LoggedInActivity.class);
-                    MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(LoginActivity.this, LoggedInActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
                 } else if (username.getText().toString().equals(user5.getUsername()) && password.getText().toString().equals(user5.getPassword())) {
 
                     byte[] Data=user5.getTestingToken(); //define data
@@ -132,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
-                    Toast.makeText(MainActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
 
-                    Intent myIntent = new Intent(MainActivity.this, LoggedInActivity.class);
-                    MainActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(LoginActivity.this, LoggedInActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
                 } else {
                     //incorrect
-                    Toast.makeText(MainActivity.this, "LOGIN FAILED !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "LOGIN FAILED !!!", Toast.LENGTH_SHORT).show();
                 }
             }
 

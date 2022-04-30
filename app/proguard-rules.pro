@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.example.nfccardemulator.MyApplet { *; }
+-keep class com.example.nfccardemulator.VSBAccessApplet { *; }
 
 -keep class javacard.framework.service.* { *; }
 -keep class javacard.framework.APDU { *; }

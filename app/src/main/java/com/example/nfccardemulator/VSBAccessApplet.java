@@ -41,8 +41,9 @@ import static javacard.framework.ISO7816.INS_SELECT;
 /**
  * Basic HelloWorld JavaCard Applet.
  * @author LICEL LLC
+ * Original HelloWorld applet was modified
  */
-public class MyApplet extends BaseApplet {
+public class VSBAccessApplet extends BaseApplet {
 
     private final static byte SEND_ENCRYPTED = (byte) 0x01;
     private final static byte SEND_ENCRYPTED2 = (byte) 0x10;
@@ -105,7 +106,7 @@ public class MyApplet extends BaseApplet {
      * @param bOffset the starting offset in bArray
      * @param bLength the length in bytes of the parameter data in bArray
      */
-    protected MyApplet(byte[] bArray, short bOffset, byte bLength) {
+    protected VSBAccessApplet(byte[] bArray, short bOffset, byte bLength) {
         echoBytes = new byte[LENGTH_ECHO_BYTES];
         currentEF = new byte[LENGTH_ECHO_BYTES];
         if (bLength > 0) {
@@ -130,16 +131,16 @@ public class MyApplet extends BaseApplet {
      */
     public static void install(byte[] bArray, short bOffset, byte bLength)
             throws ISOException {
-        new MyApplet(bArray, bOffset, bLength);
+        new VSBAccessApplet(bArray, bOffset, bLength);
     }
 
     /**
      * This method is called each time the applet receives APDU.
      */
-
+    long startTime;
     public void process(APDU apdu) {
         // good practice
-        if(selectingApplet()) return;
+        if(selectingApplet()) {return;}
         byte[] buffer = apdu.getBuffer();
         // Now determine the requested instruction:
         switch (buffer[ISO7816.OFFSET_INS]) {
@@ -210,7 +211,12 @@ public class MyApplet extends BaseApplet {
             ISOException.throwIt(sw);
         }
 
+
+
     }
+
+
+
     private void sendEncrypted(APDU apdu, short sw) throws Exception {
         //Encryption part
         byte[] decodedPublicKey = Base64.getDecoder().decode(publicKeyEncoded);

@@ -79,7 +79,7 @@ public class MyAppletTest {
                 decodedPublicKey);
         PublicKey publicKey2 = keyFactory.generatePublic(publicKeySpec);
 
-        byte[] cipherTextArray = MyApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey2);
+        byte[] cipherTextArray = VSBAccessApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey2);
 
         Assert.assertFalse(byteArrayCheck3(cipherTextArray));
 
@@ -95,7 +95,7 @@ public class MyAppletTest {
                 decodedPublicKey);
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
 
-        byte[] cipherTextArray = MyApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey);
+        byte[] cipherTextArray = VSBAccessApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey);
 
         Assert.assertEquals(512, cipherTextArray.length);
 
@@ -120,7 +120,7 @@ public class MyAppletTest {
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
 
         //Encrypt nonce and token
-        byte[] cipherTextArray = MyApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey);
+        byte[] cipherTextArray = VSBAccessApplet.encrypt(incomingBytes, testingToken.getBytes(), publicKey);
 
         //Assert decrypted message and initial nonce + token
         Assert.assertEquals(Arrays.toString(decrypt(privateKeyEncoded, cipherTextArray)), (Arrays.toString(combined)));
